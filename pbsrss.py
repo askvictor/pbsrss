@@ -58,11 +58,11 @@ if __name__ == '__main__':
     if sys.argv[1] in ('--list', '-l'):
         all_programs()
     else:
-        f = open('all_feeds.xml', 'w')
-        f.write('<opml version="2.0">\n<body>\n<outline text="Subscriptions" title="Subscriptions">\n')
+        f = open('all_feeds.opml', 'w')
+        f.write('<opml version="2.0">\n<body>\n<outline text="PBS FM Radio" title="PBS FM Radio">\n')
         for arg in sys.argv[1:]:
             pbs_rss(arg)
-            f.write("<outline xmlUrl='%s/%s' />\n" % (FEED_BASE, arg))
+            f.write('<outline text="%s" xmlUrl="%s/%s-podcast.xml" />\n' % (arg, FEED_BASE, arg))
         f.write('</outline>\n</body>\n</opml>\n')
         f.close()
 
