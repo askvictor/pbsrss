@@ -7,6 +7,7 @@ import sys
 import re
 
 BASE_URL = "http://pbsfm.org.au"
+FEED_BASE = "http://192.168.1.11/podcasts"  # or whereever your generated files end up
 
 def parse(url):
     return BeautifulSoup(requests.get(url).content, "html.parser")
@@ -57,6 +58,11 @@ if __name__ == '__main__':
     if sys.argv[1] in ('--list', '-l'):
         all_programs()
     else:
+        f = open('all_feeds.xml', 'w')
+        f.write('<opml version="2.0">\n<body>\n<outline text="Subscriptions" title="Subscriptions">\n')
         for arg in sys.argv[1:]:
             pbs_rss(arg)
+            f.write("<outline xmlUrl='%s/%s' />\n" % (FEED_BASE, arg))
+        f.write('</outline>\n</body>\n</opml>\n')
+        f.close()
 
