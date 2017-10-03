@@ -23,6 +23,7 @@ def pbs_rss(show_id):
     print('processing %s' % show_id)
     show_url = BASE_URL + '/' + show_id
     show_info = parse(show_url)
+    show_title = show_info.h1.text
 
     episodes_url = show_url + '/audio'
     episodes = parse(episodes_url)
@@ -32,7 +33,7 @@ def pbs_rss(show_id):
     feed.podcast.itunes_category('Music')
     feed.id(show_url)
     feed.link(href=show_url, rel='alternate')
-    feed.title(show_info.h1.text)
+    feed.title(show_title)
     feed.description(show_info.select('div#content-area div.view-content')[0].get_text().strip())
     feed.logo(show_info.select('span.views-field-image-attach-images img')[0].get('src'))
     feed.language('en')
@@ -53,6 +54,7 @@ def pbs_rss(show_id):
     rss_filename = '%s-podcast.xml' % show_id
     feed.rss_file(rss_filename)
     print('created %s' % rss_filename)
+    return show_id, rss_filename, show_title
 
 if __name__ == '__main__':
     if sys.argv[1] in ('--list', '-l'):
@@ -61,8 +63,8 @@ if __name__ == '__main__':
         f = open('all_feeds.opml', 'w')
         f.write('<opml version="2.0">\n<body>\n<outline text="PBS FM Radio" title="PBS FM Radio">\n')
         for arg in sys.argv[1:]:
-            pbs_rss(arg)
-            f.write('<outline text="%s" xmlUrl="%s/%s-podcast.xml" />\n' % (arg, FEED_BASE, arg))
+            show_id, filename, title = pbs_rss(arg)
+            f.write('<outline text="%s" xmlUrl="%s/%s" />\n' % (title, FEED_BASE, filename))
         f.write('</outline>\n</body>\n</opml>\n')
         f.close()
 
