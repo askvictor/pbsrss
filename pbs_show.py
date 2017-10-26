@@ -38,8 +38,7 @@ def weekly_lambda_handler(event, context):
                 end = dt.select('span.date-display-end')[0].text
                 day = end[0:3].lower()
                 time = end[4:]
-            if day == "%I:%""wee":
-                day = "mon,tue,wed,thu,fri"
+            if day not in days_of_week_l:
                 continue  # skip all-weekdays programs (for now; TODO)
             hour = datetime.strptime(time, "%I:%M%p").hour
             hour -= TIME_DIFF_TO_UTC
