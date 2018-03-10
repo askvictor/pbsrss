@@ -15,7 +15,7 @@ TIME_DIFF_TO_UTC = 10
 TIME_AFTER_SHOW = 1  # hours after show to wait until running scrape
 days_of_week_d = {'sun': 0, 'mon': 1, 'tue': 2, 'wed': 3, 'thu': 4, 'fri': 5, 'sat': 6}
 days_of_week_l = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
-ARN=os.environ('ARN')
+ARN = os.environ('ARN')  # could change this to context.invoked_function_arn inside the handler
 
 
 def parse(url):
@@ -62,6 +62,7 @@ def weekly_lambda_handler(event, context):
             events_client.put_targets(Rule=show_id, Targets=[{'Id': '1', "Arn": ARN, 'Input': '{"show_id": "%s"}' % show_id}])
         except IndexError:
             continue
+
 
 def pbs_rss(show_id):
     print('processing %s' % show_id)
