@@ -1,0 +1,14 @@
+[Unit]
+Description=PBS Podcast service
+After=network.target
+
+[Service]
+User=<USER TO RUN AS>
+Group=<GROUP TO RUN AS>
+WorkingDirectory=<PATH TO THIS REPO DIRECTORY>
+ExecStart=<PATH TO GUNICORN>/gunicorn --workers 3 --bind 0.0.0.0:1067 wsgi:app
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
