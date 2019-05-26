@@ -57,14 +57,13 @@ def pbs_show(slug):
         feed_entry.title(title)
         feed_entry.author(name=presenters)
         feed_entry.enclosure(media_url, 0, 'audio/mp4')
-        ep_data = requests.get(episode['episodeRestUrl']).json()
-        tracklist_data = requests.get(ep_data['playlistRestUrl']).json()
-        tracklist = "<h3>Tracklist</h3>" + "<br>".join([track['title'] for track in tracklist_data])
-        #feed_entry.description(title)
-        feed_entry.description(tracklist)
+        try:
+            ep_data = requests.get(episode['episodeRestUrl']).json()
+            tracklist_data = requests.get(ep_data['playlistRestUrl']).json()
+            tracklist = "<h3>Tracklist</h3>" + "<br>".join([track['title'] for track in tracklist_data])
+            feed_entry.description(tracklist)
+        except:
+            feed_entry.description(title)
 
-    #rss_filename = '%s-podcast.xml' % slug
-    #feed.rss_file(rss_filename)
-    #print('created %s' % rss_filename)
     return Response(feed.rss_str(pretty=True), mimetype='application/rss+xml')
 
