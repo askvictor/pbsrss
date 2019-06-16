@@ -4,9 +4,13 @@ import datetime
 from flask import Flask, Response, render_template, send_file
 from pathlib import Path
 import re
+
 app = Flask(__name__)
 
 CACHE_DIR = "cache"
+p = Path(CACHE_DIR)
+if not p.exists():
+    p.mkdir()
 
 all_shows_url = 'https://airnet.org.au/rest/stations/3pbs/programs'
 
@@ -29,7 +33,6 @@ def all_shows():
 def pbs_show(slug):
     print('processing %s' % slug)
 
-    p = Path(CACHE_DIR)
     cache_glob = list(p.glob(slug + "*"))
     if cache_glob:
         recent_cache_path = sorted(cache_glob)[-1]
