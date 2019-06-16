@@ -27,6 +27,10 @@ def all_shows():
     for show in shows:
         if show['slug'] and not show['archived']:
             shows_data.append((show['name'], "/"+show['slug']+".xml"))
+    print(shows_data)
+    shows_data.sort(key=lambda s: s[0][4:].lower() if s[0][0:4].lower() == "the " else s[0].lower())  # sort ignoring 'the'
+    print(shows_data)
+
     return render_template("all_shows.html", shows=shows_data)
 
 @app.route("/<slug>.xml")
