@@ -53,7 +53,7 @@ def pbs_show(slug):
         print(datetime.datetime.now().isoformat())
         if cache_time + datetime.timedelta(days=7) > datetime.datetime.now():
             # cached file is still valid; return that
-            return send_file(recent_cache_path.open(), mimetype='application/rss+xml')
+            return send_file(recent_cache_path.open('rb'), mimetype='application/rss+xml')
 
     show_url = show_format.format(slug=slug)
     show_info = requests.get(show_url).json()
