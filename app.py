@@ -78,7 +78,7 @@ def pbs_show(slug):
 
     episodes = requests.get(show_info['episodesRestUrl']).json()
     episode_times = []
-    for episode in reversed(episodes):
+    for episode in episodes:
         start_time = datetime.datetime.strptime(episode['start'], '%Y-%m-%d %H:%M:%S')
         episode_times.append(start_time)
         title = "{} {}".format(show_title, start_time.date())
